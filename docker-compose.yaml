@@ -1,0 +1,80 @@
+version: "3.7"
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.4.3
+    container_name: udd-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - udd-network
+    #    command: >
+    #      bash -c '
+    #      if ! elasticsearch-plugin list | grep -q "analysis-icu"; then
+    #        elasticsearch-plugin install analysis-icu
+    #      else
+    #        tail -f /dev/null &
+    #      fi'
+    restart: always
+
+  logstash:
+    image: docker.elastic.co/logstash/logstash:8.4.3
+    container_name: udd-logstash
+    ports:
+      - "5044:5044"
+    volumes:
+      - "./logstash-ingest-data/:/usr/share/logstash/ingest_data/"
+      - "./logstash-config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf"
+    restart: always
+    networks:
+      - udd-network
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.4.3
+    container_name: udd-kibana
+    ports:
+      - "5601:5601"
+    networks:
+      - udd-network
+    restart: always
+
+  minio:
+    image: quay.io/minio/minio
+    container_name: udd-minio
+    ports:
+      - 9000:9000
+      - 9090:9090
+    environment:
+      - MINIO_ROOT_USER=ROOTUSER
+      - MINIO_ROOT_PASSWORD=PASS1234
+    command: server /data --console-address ":9090"
+    volumes:
+      - minio-data:/data
+    restart: always
+    networks:
+      - udd-network
+
+  database:
+    image: "postgres:11"
+    env_file:
+      - .env.docker.database
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "psql -U postgres" , "pg_isready", "-U" ,"postgres" ]
+      interval: 15s
+      timeout: 15s
+      retries: 5
+      start_period: 10s
+
+networks:
+  udd-network:
+    name: udd-network
+
+volumes:
+  minio-data:
