@@ -6,10 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -17,6 +14,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "contract_table")
+@ToString
 public class ContractTable {
 
     @Id
@@ -35,11 +33,8 @@ public class ContractTable {
     @Column(name = "content")
     private String content;
 
-    @Column(name = "employee_first_name")
-    private String employeeFirstName;
-
-    @Column(name = "employee_last_name")
-    private String employeeLastName;
+    @Column(name = "employee_name")
+    private String employeeName;
 
     @Column(name = "government_name")
     private String governmentName;

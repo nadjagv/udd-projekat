@@ -1,4 +1,4 @@
-package com.udd.uddprojekat.service.interfaces;
+package com.udd.uddprojekat.service;
 
 import io.minio.GetObjectResponse;
 import org.springframework.stereotype.Service;

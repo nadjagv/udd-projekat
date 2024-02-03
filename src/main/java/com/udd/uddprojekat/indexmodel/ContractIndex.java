@@ -37,10 +37,7 @@ public class ContractIndex {
     private Integer databaseId;
 
     @Field(type = FieldType.Text, store = true, name = "server_filename")
-    private String employeeFirstName;
-
-    @Field(type = FieldType.Text, store = true, name = "server_filename")
-    private String employeeLastName;
+    private String employeeName;
 
     @Field(type = FieldType.Text, store = true, name = "server_filename")
     private String governmentName;

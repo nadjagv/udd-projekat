@@ -1,4 +1,4 @@
-package com.udd.uddprojekat.service.interfaces;
+package com.udd.uddprojekat.service;
 
 import com.udd.uddprojekat.indexmodel.DummyIndex;
 import java.util.List;

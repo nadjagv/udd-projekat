@@ -4,7 +4,7 @@ import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import com.udd.uddprojekat.exceptionhandling.exception.MalformedQueryException;
 import com.udd.uddprojekat.indexmodel.DummyIndex;
-import com.udd.uddprojekat.service.interfaces.SearchService;
+import com.udd.uddprojekat.service.SearchService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.common.unit.Fuzziness;

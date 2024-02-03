@@ -2,7 +2,7 @@ package com.udd.uddprojekat.service.impl;
 
 import com.udd.uddprojekat.exceptionhandling.exception.NotFoundException;
 import com.udd.uddprojekat.exceptionhandling.exception.StorageException;
-import com.udd.uddprojekat.service.interfaces.FileService;
+import com.udd.uddprojekat.service.FileService;
 import io.minio.GetObjectArgs;
 import io.minio.GetObjectResponse;
 import io.minio.GetPresignedObjectUrlArgs;

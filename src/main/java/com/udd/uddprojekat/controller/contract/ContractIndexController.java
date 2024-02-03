@@ -1,9 +1,9 @@
-package com.udd.uddprojekat.controller;
+package com.udd.uddprojekat.controller.contract;
 
 import com.udd.uddprojekat.dto.DocumentFileDTO;
 import com.udd.uddprojekat.dto.DocumentFileResponseDTO;
-import com.udd.uddprojekat.service.interfaces.IndexingService;
-import lombok.RequiredArgsConstructor;
+import com.udd.uddprojekat.service.IndexingService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,11 +12,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/index")
-@RequiredArgsConstructor
-public class IndexController {
+@RequestMapping("/api/contract/index")
+public class ContractIndexController {
 
+    @Qualifier("ContractIndexingService")
     private final IndexingService indexingService;
+
+    public ContractIndexController(@Qualifier("ContractIndexingService") IndexingService indexingService) {
+        this.indexingService = indexingService;
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -26,3 +30,4 @@ public class IndexController {
         return new DocumentFileResponseDTO(serverFilename);
     }
 }
+

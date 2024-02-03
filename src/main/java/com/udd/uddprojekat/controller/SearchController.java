@@ -3,7 +3,7 @@ package com.udd.uddprojekat.controller;
 
 import com.udd.uddprojekat.dto.SearchQueryDTO;
 import com.udd.uddprojekat.indexmodel.DummyIndex;
-import com.udd.uddprojekat.service.interfaces.SearchService;
+import com.udd.uddprojekat.service.SearchService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
