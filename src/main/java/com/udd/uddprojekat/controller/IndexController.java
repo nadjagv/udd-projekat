@@ -1,7 +1,7 @@
 package com.udd.uddprojekat.controller;
 
-import com.udd.uddprojekat.dto.DummyDocumentFileDTO;
-import com.udd.uddprojekat.dto.DummyDocumentFileResponseDTO;
+import com.udd.uddprojekat.dto.DocumentFileDTO;
+import com.udd.uddprojekat.dto.DocumentFileResponseDTO;
 import com.udd.uddprojekat.service.interfaces.IndexingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,9 +20,9 @@ public class IndexController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public DummyDocumentFileResponseDTO addDocumentFile(
-        @ModelAttribute DummyDocumentFileDTO documentFile) {
+    public DocumentFileResponseDTO addDocumentFile(
+        @ModelAttribute DocumentFileDTO documentFile) {
         var serverFilename = indexingService.indexDocument(documentFile.file());
-        return new DummyDocumentFileResponseDTO(serverFilename);
+        return new DocumentFileResponseDTO(serverFilename);
     }
 }
