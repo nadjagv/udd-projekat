@@ -1,6 +1,5 @@
 package com.udd.uddprojekat.service;
 
-import com.udd.uddprojekat.indexmodel.DummyIndex;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

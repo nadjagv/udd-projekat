@@ -34,14 +34,9 @@ public class LawSearchService implements SearchService<LawIndex> {
 
     @Override
     public Page<LawIndex> advancedSearch(List<String> expression, Pageable pageable) {
-        if (expression.size() != 3) {
-            throw new MalformedQueryException("Search query malformed.");
-        }
 
-        String operation = expression.get(1);
-        expression.remove(1);
         var searchQueryBuilder =
-                new NativeQueryBuilder().withQuery(QueryBuilder.buildAdvancedSearchQuery(expression, operation))
+                new NativeQueryBuilder().withQuery(QueryBuilder.buildAdvancedSearchQuery(expression))
                         .withPageable(pageable);
 
         return runQuery(searchQueryBuilder.build());

@@ -1,9 +1,7 @@
 package com.udd.uddprojekat.service.impl.law;
 
-import com.udd.uddprojekat.indexmodel.DummyIndex;
 import com.udd.uddprojekat.indexmodel.LawIndex;
 import com.udd.uddprojekat.indexrepository.LawIndexRepository;
-import com.udd.uddprojekat.model.DummyTable;
 import com.udd.uddprojekat.model.LawTable;
 import com.udd.uddprojekat.respository.LawRepository;
 import com.udd.uddprojekat.service.FileService;
