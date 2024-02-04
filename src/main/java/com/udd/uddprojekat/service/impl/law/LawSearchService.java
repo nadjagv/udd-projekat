@@ -1,11 +1,14 @@
-package com.udd.uddprojekat.service.impl;
+package com.udd.uddprojekat.service.impl.law;
 
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import com.udd.uddprojekat.exceptionhandling.exception.MalformedQueryException;
 import com.udd.uddprojekat.indexmodel.DummyIndex;
+import com.udd.uddprojekat.indexmodel.LawIndex;
 import com.udd.uddprojekat.service.SearchService;
+
 import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.springframework.data.domain.Page;
@@ -17,23 +20,23 @@ import org.springframework.data.elasticsearch.core.SearchHitSupport;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("LawSearchService")
 @RequiredArgsConstructor
-public class SearchServiceImpl implements SearchService {
+public class LawSearchService implements SearchService<LawIndex> {
 
     private final ElasticsearchOperations elasticsearchTemplate;
 
     @Override
-    public Page<DummyIndex> simpleSearch(List<String> keywords, Pageable pageable) {
+    public Page<LawIndex> simpleSearch(List<String> keywords, Pageable pageable) {
         var searchQueryBuilder =
-            new NativeQueryBuilder().withQuery(buildSimpleSearchQuery(keywords))
-                .withPageable(pageable);
+                new NativeQueryBuilder().withQuery(buildSimpleSearchQuery(keywords))
+                        .withPageable(pageable);
 
         return runQuery(searchQueryBuilder.build());
     }
 
     @Override
-    public Page<DummyIndex> advancedSearch(List<String> expression, Pageable pageable) {
+    public Page<LawIndex> advancedSearch(List<String> expression, Pageable pageable) {
         if (expression.size() != 3) {
             throw new MalformedQueryException("Search query malformed.");
         }
@@ -41,8 +44,8 @@ public class SearchServiceImpl implements SearchService {
         String operation = expression.get(1);
         expression.remove(1);
         var searchQueryBuilder =
-            new NativeQueryBuilder().withQuery(buildAdvancedSearchQuery(expression, operation))
-                .withPageable(pageable);
+                new NativeQueryBuilder().withQuery(buildAdvancedSearchQuery(expression, operation))
+                        .withPageable(pageable);
 
         return runQuery(searchQueryBuilder.build());
     }
@@ -51,7 +54,7 @@ public class SearchServiceImpl implements SearchService {
         return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
             tokens.forEach(token -> {
                 b.should(sb -> sb.match(
-                    m -> m.field("title").fuzziness(Fuzziness.ONE.asString()).query(token)));
+                        m -> m.field("title").fuzziness(Fuzziness.ONE.asString()).query(token)));
                 b.should(sb -> sb.match(m -> m.field("content_sr").query(token)));
                 b.should(sb -> sb.match(m -> m.field("content_en").query(token)));
             });
@@ -69,17 +72,17 @@ public class SearchServiceImpl implements SearchService {
             switch (operation) {
                 case "AND":
                     b.must(sb -> sb.match(
-                        m -> m.field(field1).fuzziness(Fuzziness.ONE.asString()).query(value1)));
+                            m -> m.field(field1).fuzziness(Fuzziness.ONE.asString()).query(value1)));
                     b.must(sb -> sb.match(m -> m.field(field2).query(value2)));
                     break;
                 case "OR":
                     b.should(sb -> sb.match(
-                        m -> m.field(field1).fuzziness(Fuzziness.ONE.asString()).query(value1)));
+                            m -> m.field(field1).fuzziness(Fuzziness.ONE.asString()).query(value1)));
                     b.should(sb -> sb.match(m -> m.field(field2).query(value2)));
                     break;
                 case "NOT":
                     b.must(sb -> sb.match(
-                        m -> m.field(field1).fuzziness(Fuzziness.ONE.asString()).query(value1)));
+                            m -> m.field(field1).fuzziness(Fuzziness.ONE.asString()).query(value1)));
                     b.mustNot(sb -> sb.match(m -> m.field(field2).query(value2)));
                     break;
             }
@@ -88,13 +91,13 @@ public class SearchServiceImpl implements SearchService {
         })))._toQuery();
     }
 
-    private Page<DummyIndex> runQuery(NativeQuery searchQuery) {
+    private Page<LawIndex> runQuery(NativeQuery searchQuery) {
 
         var searchHits = elasticsearchTemplate.search(searchQuery, DummyIndex.class,
-            IndexCoordinates.of("dummy_index"));
+                IndexCoordinates.of("dummy_index"));
 
         var searchHitsPaged = SearchHitSupport.searchPageFor(searchHits, searchQuery.getPageable());
 
-        return (Page<DummyIndex>) SearchHitSupport.unwrapSearchHits(searchHitsPaged);
+        return (Page<LawIndex>) SearchHitSupport.unwrapSearchHits(searchHitsPaged);
     }
 }

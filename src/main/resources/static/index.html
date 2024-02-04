@@ -168,7 +168,7 @@
             var query = {
                 keywords: $("#query").val().split(" ")
             };
-            var url = '/api/search/' + ($("#queryType").is(':checked') ? 'advanced' : 'simple');
+            var url = '/api/law/search/' + ($("#queryType").is(':checked') ? 'advanced' : 'simple');
             $.ajax({
                 url: url,
                 type: 'POST',

@@ -7,9 +7,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public interface SearchService {
+public interface SearchService<T>{
 
-    Page<DummyIndex> simpleSearch(List<String> keywords, Pageable pageable);
+    Page<T> simpleSearch(List<String> keywords, Pageable pageable);
 
-    Page<DummyIndex> advancedSearch(List<String> expression, Pageable pageable);
+    Page<T> advancedSearch(List<String> expression, Pageable pageable);
 }
