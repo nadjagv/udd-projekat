@@ -1,7 +1,7 @@
-package com.udd.uddprojekat.service.impl.law;
+package com.udd.uddprojekat.service.impl.contract;
 
 import com.udd.uddprojekat.exceptionhandling.exception.MalformedQueryException;
-import com.udd.uddprojekat.indexmodel.LawIndex;
+import com.udd.uddprojekat.indexmodel.ContractIndex;
 import com.udd.uddprojekat.service.SearchService;
 
 import java.util.List;
@@ -17,14 +17,14 @@ import org.springframework.data.elasticsearch.core.SearchHitSupport;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.stereotype.Service;
 
-@Service("LawSearchService")
+@Service("ContractSearchService")
 @RequiredArgsConstructor
-public class LawSearchService implements SearchService<LawIndex> {
+public class ContractSearchService implements SearchService<ContractIndex> {
 
     private final ElasticsearchOperations elasticsearchTemplate;
 
     @Override
-    public Page<LawIndex> simpleSearch(List<String> keywords, List<String> fieldNames, Pageable pageable) {
+    public Page<ContractIndex> simpleSearch(List<String> keywords, List<String> fieldNames, Pageable pageable) {
         var searchQueryBuilder =
                 new NativeQueryBuilder().withQuery(QueryBuilder.buildSimpleSearchQuery(keywords, fieldNames))
                         .withPageable(pageable);
@@ -33,7 +33,7 @@ public class LawSearchService implements SearchService<LawIndex> {
     }
 
     @Override
-    public Page<LawIndex> advancedSearch(List<String> expression, Pageable pageable) {
+    public Page<ContractIndex> advancedSearch(List<String> expression, Pageable pageable) {
         if (expression.size() != 3) {
             throw new MalformedQueryException("Search query malformed.");
         }
@@ -48,13 +48,14 @@ public class LawSearchService implements SearchService<LawIndex> {
     }
 
 
-    private Page<LawIndex> runQuery(NativeQuery searchQuery) {
+    private Page<ContractIndex> runQuery(NativeQuery searchQuery) {
 
-        var searchHits = elasticsearchTemplate.search(searchQuery, LawIndex.class,
-                IndexCoordinates.of("law_index"));
+        var searchHits = elasticsearchTemplate.search(searchQuery, ContractIndex.class,
+                IndexCoordinates.of("contract_index"));
 
         var searchHitsPaged = SearchHitSupport.searchPageFor(searchHits, searchQuery.getPageable());
 
-        return (Page<LawIndex>) SearchHitSupport.unwrapSearchHits(searchHitsPaged);
+        return (Page<ContractIndex>) SearchHitSupport.unwrapSearchHits(searchHitsPaged);
     }
 }
+

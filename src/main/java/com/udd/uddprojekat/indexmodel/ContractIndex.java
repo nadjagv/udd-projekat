@@ -36,15 +36,15 @@ public class ContractIndex {
     @Field(type = FieldType.Integer, store = true, name = "database_id")
     private Integer databaseId;
 
-    @Field(type = FieldType.Text, store = true, name = "server_filename")
+    @Field(type = FieldType.Text, store = true, name = "employee_name")
     private String employeeName;
 
-    @Field(type = FieldType.Text, store = true, name = "server_filename")
+    @Field(type = FieldType.Text, store = true, name = "government_name")
     private String governmentName;
 
-    @Field(type = FieldType.Text, store = true, name = "server_filename")
+    @Field(type = FieldType.Text, store = true, name = "government_level")
     private String governmentLevel;
 
-    @Field(type = FieldType.Text, store = true, name = "server_filename")
+    @Field(type = FieldType.Text, store = true, name = "government_address")
     private String governmentAddress;
 }
