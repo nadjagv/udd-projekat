@@ -288,15 +288,27 @@
             var resultsDiv = $("#results");
             resultsDiv.empty();
 
+            console.log(data)
+
             data.content.forEach(function (result) {
-                var contentToDisplay = result.contentSr !== null ? result.contentSr : result.contentEn;
+                console.log(result)
+                var content = result.content.contentSr !== null ? result.content.contentSr : result.content.contentEn;
+                var contentToDisplay = " "
+                if(result.highlightFields) {
+                    console.log(result.highlightFields)
+                    Object.keys(result.highlightFields).forEach(function (key) {
+                        contentToDisplay = contentToDisplay + result.highlightFields[key] + "\n";
+                    })
+                }else {
+                    contentToDisplay = content
+                }
 
                 var card = `<div class="col-md-6">
                                     <div class="card">
                                         <div class="card-body">
-                                            <h5 class="card-title">${result.title}</h5>
+                                            <h5 class="card-title">${result.content.title}</h5>
                                             <p class="card-text">${contentToDisplay}</p>
-                                            <a href="http://localhost:8080/api/file/${result.serverFilename}" class="btn btn-primary" download="${result.title.replace(
+                                            <a href="http://localhost:8080/api/file/${result.content.serverFilename}" class="btn btn-primary" download="${result.content.title.replace(
                     /\s+/g, '-')}">Download</a>
                                         </div>
                                     </div>

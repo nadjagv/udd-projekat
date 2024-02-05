@@ -7,6 +7,7 @@ import com.udd.uddprojekat.util.Constants;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.SearchPage;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class LawSearchController {
     }
 
     @PostMapping("/simple")
-    public Page<LawIndex> simpleSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
+    public SearchPage<LawIndex> simpleSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
                                        Pageable pageable) {
         return searchService.simpleSearch(simpleSearchQuery.keywords(),
                 List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME),
@@ -34,8 +35,8 @@ public class LawSearchController {
     }
 
     @PostMapping("/advanced")
-    public Page<LawIndex> advancedSearch(@RequestBody SearchQueryDTO advancedSearchQuery,
-                                         Pageable pageable) {
+    public SearchPage<LawIndex> advancedSearch(@RequestBody SearchQueryDTO advancedSearchQuery,
+                                               Pageable pageable) {
         return searchService.advancedSearch(advancedSearchQuery.keywords(), pageable);
     }
 }
