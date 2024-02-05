@@ -129,6 +129,8 @@
                         level</label><br>
                     <input type="radio" id="content" name="contractSearchField" value="content">
                     <label for="content" style="padding-right: 10px; margin: 0px">Content</label><br>
+                    <input type="checkbox" id="contractPhraseQueryType" name="contractPhraseQueryType">
+                    <label for="contractPhraseQueryType" style="padding-right: 10px; margin: 0px;">Phrase Query</label>
                 </div>
             </div>
             <input type="submit" value="Simple search" id="btnSubmitContractLuceneQueryLanguage"
@@ -171,6 +173,10 @@
                                 Query</label>
                         </div>
                     </div>
+                    <br/>
+                    <span/>
+                    <input type="checkbox" id="lawPhraseQueryType" name="lawPhraseQueryType">
+                    <label for="lawPhraseQueryType" style="padding-right: 10px; margin: 0px;">Phrase Query</label>
                 </div>
             </div>
             <input type="submit" value="Search" id="btnSubmitLuceneQueryLanguage" class="btn btn-primary">
@@ -225,7 +231,9 @@
         $("#luceneQueryLanguage").submit(function (event) {
             event.preventDefault();
             var query = {
-                keywords: $("#query").val().split(" ")
+                keywords: $("#query").val().split(" "),
+                phrase: $("#query").val(),
+                phraseQuery: $("#lawPhraseQueryType").is(':checked')
             };
             var url = '/api/law/search/' + ($("#queryType").is(':checked') ? 'advanced' : 'simple');
             $.ajax({
@@ -242,7 +250,9 @@
         $("#contractLuceneQueryLanguage").submit(function (event) {
             event.preventDefault();
             var query = {
-                keywords: $("#contractQuery").val().split(" ")
+                keywords: $("#contractQuery").val().split(" "),
+                phrase: $("#contractQuery").val(),
+                phraseQuery: $("#contractPhraseQueryType").is(':checked')
             };
             var url = '/api/contract/search/simple/' + ($('input[name="contractSearchField"]:checked').val());
             $.ajax({

@@ -29,7 +29,8 @@ public class LawSearchController {
     public Page<LawIndex> simpleSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
                                        Pageable pageable) {
         return searchService.simpleSearch(simpleSearchQuery.keywords(),
-                List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME), pageable);
+                List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME),
+                pageable, simpleSearchQuery.phraseQuery());
     }
 
     @PostMapping("/advanced")

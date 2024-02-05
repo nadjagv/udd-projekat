@@ -24,9 +24,12 @@ public class ContractSearchService implements SearchService<ContractIndex> {
     private final ElasticsearchOperations elasticsearchTemplate;
 
     @Override
-    public Page<ContractIndex> simpleSearch(List<String> keywords, List<String> fieldNames, Pageable pageable) {
+    public Page<ContractIndex> simpleSearch(List<String> keywords, List<String> fieldNames, Pageable pageable, boolean isPhraseSearch) {
         var searchQueryBuilder =
-                new NativeQueryBuilder().withQuery(QueryBuilder.buildSimpleSearchQuery(keywords, fieldNames))
+                new NativeQueryBuilder().withQuery(
+                                isPhraseSearch
+                                        ? QueryBuilder.buildPhraseQuery(String.join(" ", keywords), fieldNames)
+                                        : QueryBuilder.buildSimpleSearchQuery(keywords, fieldNames))
                         .withPageable(pageable);
 
         return runQuery(searchQueryBuilder.build());

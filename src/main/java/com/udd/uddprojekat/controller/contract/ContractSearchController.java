@@ -28,29 +28,33 @@ public class ContractSearchController {
     @PostMapping("/simple/employee")
     public Page<ContractIndex> simpleEmployeeSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
                                                     Pageable pageable) {
+
         return searchService.simpleSearch(simpleSearchQuery.keywords(),
-                List.of(Constants.EMPLOYEE_NAME_FIELD_NAME), pageable);
+                List.of(Constants.EMPLOYEE_NAME_FIELD_NAME), pageable, simpleSearchQuery.phraseQuery());
     }
 
     @PostMapping("/simple/government")
     public Page<ContractIndex> simpleGovernmentSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
                                                       Pageable pageable) {
         return searchService.simpleSearch(simpleSearchQuery.keywords(),
-                List.of(Constants.GOVERNMENT_NAME_FIELD_NAME, Constants.GOVERNMENT_LEVEL_FIELD_NAME), pageable);
+                List.of(Constants.GOVERNMENT_NAME_FIELD_NAME, Constants.GOVERNMENT_LEVEL_FIELD_NAME),
+                pageable, simpleSearchQuery.phraseQuery());
     }
 
     @PostMapping("/simple/content")
     public Page<ContractIndex> simpleContentSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
                                                    Pageable pageable) {
         return searchService.simpleSearch(simpleSearchQuery.keywords(),
-                List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME), pageable);
+                List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME),
+                pageable, simpleSearchQuery.phraseQuery());
     }
 
     @PostMapping("/simple")
     public Page<ContractIndex> simpleSearch(@RequestBody SearchQueryDTO simpleSearchQuery,
                                             Pageable pageable) {
         return searchService.simpleSearch(simpleSearchQuery.keywords(),
-                List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME), pageable);
+                List.of(Constants.CONTENT_SR_FIELD_NAME, Constants.CONTENT_EN_FIELD_NAME),
+                pageable, simpleSearchQuery.phraseQuery());
     }
 
     @PostMapping("/advanced")

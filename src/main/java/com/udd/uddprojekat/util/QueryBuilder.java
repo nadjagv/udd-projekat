@@ -3,6 +3,8 @@ package com.udd.uddprojekat.util;
 import co.elastic.clients.elasticsearch._types.query_dsl.BoolQuery;
 import co.elastic.clients.elasticsearch._types.query_dsl.Query;
 import lombok.experimental.UtilityClass;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.PhraseQuery;
 import org.elasticsearch.common.unit.Fuzziness;
 
 import java.util.List;
@@ -23,6 +25,24 @@ public class QueryBuilder {
             return b;
         })))._toQuery();
     }
+
+    public static Query buildPhraseQuery(String phrase, List<String> fieldNames){
+
+        return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
+            b.should(sb -> sb.matchPhrase(m -> m.field("title").slop(0).query(phrase)));
+            fieldNames.forEach( fieldName -> {
+                b.should(sb -> sb.matchPhrase(m -> m.field(fieldName).slop(0).query(phrase)));
+            });
+            return b;
+        })))._toQuery();
+    }
+
+//    PhraseQuery.Builder builder = new PhraseQuery.Builder();
+//        for (var i = 0; i < tokens.size(); i++) {
+//        for (var fieldName: fieldNames) {
+//            builder.add(new Term(fieldName, tokens.get(i)), i);
+//        }
+//    }
 
     public static Query buildAdvancedSearchQuery(List<String> expression) {
         return BoolQuery.of(q -> q.must(mb -> mb.bool(b -> {
